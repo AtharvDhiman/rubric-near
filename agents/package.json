@@ -5,6 +5,9 @@
   "description": "A poster agent that buys work within a budget, and a worker agent that earns by doing it.",
   "license": "MIT",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit"

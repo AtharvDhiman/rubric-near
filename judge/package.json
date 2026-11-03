@@ -5,6 +5,9 @@
   "description": "The AI judge for Rubric on NEAR: reads the sealed clauses from the chain and a submission, rules clause by clause, and signs the verdict.",
   "license": "MIT",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",

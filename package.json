@@ -10,7 +10,8 @@
   "workspaces": [
     "shared",
     "judge",
-    "agents"
+    "agents",
+    "demo"
   ],
   "scripts": {
     "test": "npm run test --workspaces --if-present",
