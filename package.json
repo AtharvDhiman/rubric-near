@@ -1,0 +1,25 @@
+{
+  "name": "rubric-near",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Rubric on NEAR: pay on proof, not on trust. Sealed acceptance clauses, an AI judge, and a NEAR escrow that releases funds on the verdict.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "shared",
+    "judge",
+    "agents"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.0"
+  }
+}

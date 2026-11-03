@@ -1,0 +1,18 @@
+{
+  "name": "@rubric-near/judge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The AI judge for Rubric on NEAR: reads the sealed clauses from the chain and a submission, rules clause by clause, and signs the verdict.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "judge": "tsx --env-file-if-exists=../.env src/cli.ts"
+  },
+  "dependencies": {
+    "@rubric-near/shared": "*",
+    "openai": "^7.47.0",
+    "zod": "^4.6.7"
+  }
+}
