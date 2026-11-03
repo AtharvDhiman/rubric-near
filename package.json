@@ -16,7 +16,13 @@
   ],
   "scripts": {
     "test": "npm run test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "sandbox:install": "npm --prefix sandbox install",
+    "demo:sandbox": "npm --prefix sandbox run demo",
+    "test:sandbox": "npm --prefix sandbox test",
+    "demo:testnet": "npm run demo:testnet -w demo",
+    "judge": "npm run judge -w judge --",
+    "dashboard": "npm start -w web"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

@@ -11,10 +11,9 @@
  * transaction hashes to a JSON file for the dashboard (web/public/data/verdicts.json).
  */
 
-import { mkdir, writeFile } from "node:fs/promises";
-import { dirname } from "node:path";
 import { loadSecretKey } from "@rubric-near/shared";
 import { NearAiModel } from "@rubric-near/judge";
+import { exportSnapshot, report } from "./report.js";
 import { runScenario, type Party } from "./scenario.js";
 
 function required(name: string): string {
@@ -45,22 +44,9 @@ async function main() {
     log: (line) => console.log(line),
   });
 
-  console.log("\nRECEIPTS\n" + result.table);
-  console.log("\nCHECKS (against the chain, not against what the agents said)");
-  for (const c of result.checks) console.log(`  ${c.ok ? "PASS" : "FAIL"}  ${c.name}\n        ${c.detail}`);
-  console.log(`\n${result.ok ? "ALL CHECKS PASSED" : "SOME CHECKS FAILED"}`);
-
-  // The dashboard checks this file against the chain, so it is only worth writing from a run whose
-  // own checks passed; a failed run would hand it a record of something that did not work.
-  const exportPath = process.env.EXPORT_SNAPSHOT?.trim();
-  if (exportPath && result.ok) {
-    await mkdir(dirname(exportPath), { recursive: true });
-    await writeFile(exportPath, `${JSON.stringify(result.snapshot, null, 2)}\n`, "utf8");
-    console.log(`snapshot written to ${exportPath}`);
-  } else if (exportPath) {
-    console.log("snapshot NOT written: the run did not pass its checks");
-  }
-  process.exit(result.ok ? 0 : 1);
+  const ok = report(result);
+  await exportSnapshot(result, process.env.EXPORT_SNAPSHOT);
+  process.exit(ok ? 0 : 1);
 }
 
 main().catch((error: unknown) => {

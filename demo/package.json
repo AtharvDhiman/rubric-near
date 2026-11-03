@@ -5,6 +5,9 @@
   "description": "Runs the whole loop: a poster agent buys work, a worker agent does it, the judge rules, the contract pays.",
   "license": "MIT",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",

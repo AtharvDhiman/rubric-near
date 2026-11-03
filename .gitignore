@@ -16,6 +16,7 @@ out/
 .near/
 
 # Local state
+.tmp/
 *.log
 .DS_Store
 Thumbs.db
