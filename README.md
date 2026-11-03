@@ -14,6 +14,9 @@ with no human in the loop. This repository is a testnet build made for the NEAR 
 > **Testnet only and unaudited.** Nothing here should guard real money. See
 > [Known limitations](#known-limitations).
 
+**Live dashboard: <https://rubric-near.vercel.app>** reads the contract on NEAR testnet and re-checks
+every claim in your browser.
+
 ---
 
 ## Try it
@@ -48,11 +51,12 @@ agent and the judge:
 It then checks the outcome against the chain, not against what the agents reported, and ends with
 `ALL CHECKS PASSED` (11 checks: statuses, exact payout amounts, the fee, nothing left in escrow, the
 contract's balance covering what it owes, and each stored verdict re-hashing to the hash on-chain).
-The first run downloads the sandbox binary first. The judge is an **offline mock** unless you configure a real model (see [The judge](#the-judge)), and the
-output says so.
+The first run downloads the sandbox binary first. The judge is an **offline mock** unless you configure
+a real model (see [The judge](#the-judge)), and the output says so.
 
-**Step 4** serves a dashboard that reads the contract deployed on NEAR testnet
-(see [Testnet deployment](#testnet-deployment)) and re-checks every claim in your browser.
+**Step 4** serves the same dashboard that is live at <https://rubric-near.vercel.app>: it reads the
+contract deployed on NEAR testnet (see [Testnet deployment](#testnet-deployment)) and re-checks every
+claim in your browser.
 
 More checks, if you want them:
 
