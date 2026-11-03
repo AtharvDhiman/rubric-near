@@ -271,16 +271,19 @@ pub fn fee_for(bounty: u128) -> u128 {
 
 #[near]
 impl Contract {
-    /// Deploy-time setup. The caller becomes the owner.
+    /// Deploy-time setup.
+    ///
+    /// The owner is named explicitly, and is not whoever sends this call: deploy and init are
+    /// signed by the contract's own account, and "owner" should not silently mean "whoever holds
+    /// the deploy key". The owner and the judge must be different accounts.
     ///
     /// `verdict_grace_seconds` is how long after a deadline a task that a worker submitted, but
     /// the judge never ruled on, waits before the poster may reclaim it. Seven days (604800) is
     /// the production value. A short value is only for a testnet demo, and the config view shows it.
     #[init]
-    pub fn new(judge_id: AccountId, max_bounty: U128, verdict_grace_seconds: u64) -> Self {
+    pub fn new(owner_id: AccountId, judge_id: AccountId, max_bounty: U128, verdict_grace_seconds: u64) -> Self {
         require!(max_bounty.0 >= MIN_BOUNTY, "the bounty cap is below the minimum bounty");
         require!(max_bounty.0 <= ABSOLUTE_MAX_BOUNTY, "the bounty cap is above the hard ceiling");
-        let owner_id = env::predecessor_account_id();
         require!(judge_id != owner_id, "the judge must not be the owner");
         Self {
             owner_id,

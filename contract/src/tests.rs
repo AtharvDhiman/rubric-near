@@ -52,7 +52,7 @@ fn at(predecessor: AccountId, deposit: u128, now_ns: u64) {
 
 fn deploy() -> Contract {
     at(owner(), 0, T0);
-    Contract::new(judge(), U128(10 * NEAR), 7 * 24 * 60 * 60)
+    Contract::new(owner(), judge(), U128(10 * NEAR), 7 * 24 * 60 * 60)
 }
 
 const HASH_A: &str = "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90";
@@ -755,10 +755,20 @@ fn the_owner_cannot_make_themselves_the_judge() {
     at(owner(), 0, T0);
     expect_panic(
         std::panic::AssertUnwindSafe(|| {
-            let _ = Contract::new(owner(), U128(NEAR), 60);
+            let _ = Contract::new(owner(), owner(), U128(NEAR), 60);
         }),
         "must not be the owner",
     );
+}
+
+#[test]
+fn the_owner_is_the_account_named_at_init_not_whoever_sends_the_call() {
+    // Deploy and init are signed by the contract's own account. The owner must still be the one
+    // that was named, and nobody else.
+    at(contract_id(), 0, T0);
+    let c = Contract::new(owner(), judge(), U128(10 * NEAR), 60);
+    assert_eq!(c.get_config().owner_id, owner());
+    assert_ne!(c.get_config().owner_id, contract_id());
 }
 
 #[test]
@@ -773,7 +783,7 @@ fn the_bounty_cap_is_bounded_by_the_hard_ceiling() {
     at(owner(), 0, T0);
     expect_panic(
         std::panic::AssertUnwindSafe(|| {
-            let _ = Contract::new(judge(), U128(ABSOLUTE_MAX_BOUNTY + 1), 60);
+            let _ = Contract::new(owner(), judge(), U128(ABSOLUTE_MAX_BOUNTY + 1), 60);
         }),
         "hard ceiling",
     );
