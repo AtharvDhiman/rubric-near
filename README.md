@@ -26,7 +26,7 @@ git clone https://github.com/AtharvDhiman/rubric-near.git
 cd rubric-near
 
 npm install            # 1. dependencies for the TypeScript packages
-npm test               # 2. 332 unit tests, offline, a few seconds
+npm test               # 2. 337 unit tests, offline, a few seconds
 
 npm run sandbox:install   # 3. one-off: installs the local NEAR node (near-sandbox)
 npm run demo:sandbox      #    the whole flow on a local chain: no keys, no testnet funds
