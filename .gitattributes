@@ -1,0 +1,9 @@
+# One line ending everywhere, so a shell script cloned on Linux or macOS is never CRLF.
+* text=auto eol=lf
+*.sh text eol=lf
+*.rs text eol=lf
+*.ts text eol=lf
+*.md text eol=lf
+*.png binary
+*.jpg binary
+*.wasm binary

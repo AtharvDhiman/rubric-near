@@ -1,0 +1,21 @@
+# Build output
+target/
+node_modules/
+.next/
+dist/
+out/
+
+# Secrets and keys. Nothing in this repo needs one to be committed. Use .env.example.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+**/credentials/
+.near-credentials/
+.near/
+
+# Local state
+*.log
+.DS_Store
+Thumbs.db

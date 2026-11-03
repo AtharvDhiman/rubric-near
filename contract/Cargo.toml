@@ -1,0 +1,29 @@
+[package]
+name = "rubric-near"
+version = "0.1.0"
+edition = "2021"
+description = "Pay on proof, not on trust: an escrow where acceptance clauses are sealed on-chain and an AI judge's verdict releases the funds."
+license = "MIT"
+rust-version = "1.95"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = "5.30"
+
+[dev-dependencies]
+near-sdk = { version = "5.30", features = ["unit-testing"] }
+# An independent SHA-256, used only in tests to cross-check the hash the contract computes on-chain.
+sha2 = "0.10"
+
+[profile.release]
+codegen-units = 1
+opt-level = "z"
+lto = true
+debug = false
+panic = "abort"
+# Money arithmetic must panic on overflow rather than wrap. The contract also uses checked
+# arithmetic explicitly; this is the second line of defence.
+overflow-checks = true
