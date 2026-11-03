@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Sealed acceptance clauses, an AI judge and a NEAR escrow that pays on the verdict. Every claim on this page is re-checked in your browser.">
+  <title>Rubric on NEAR</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2314191b'/%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='%23edefec' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&family=Martian+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="mast">
+    <div class="wrap mast-row">
+      <a class="mark" href="#/" aria-label="Rubric on NEAR, back to the docket">RUBRIC<span> on NEAR</span></a>
+      <span class="net" id="net">TESTNET · UNAUDITED · TEST FUNDS</span>
+    </div>
+  </header>
+
+  <main class="wrap" id="app" aria-live="polite">
+    <p class="status">Reading the chain…</p>
+    <noscript><p class="notice notice-alarm">This page re-checks every claim in your browser, so it needs JavaScript.</p></noscript>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p>Testnet only. The contract is unaudited and the funds have no value. Nothing here is taken on trust: this page reads the chain directly and re-hashes everything else itself. There is no build step, so view-source shows exactly what runs.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

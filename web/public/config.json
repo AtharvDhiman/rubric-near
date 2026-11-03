@@ -1,0 +1,7 @@
+{
+  "contract": "rubric-escrow-1d2c.testnet",
+  "network": "testnet",
+  "rpc": "https://test.rpc.fastnear.com",
+  "explorerTx": "https://testnet.nearblocks.io/txns/{hash}",
+  "explorerAccount": "https://testnet.nearblocks.io/address/{account}"
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "contract": "rubric-escrow-1d2c.testnet",
+  "network": "testnet",
+  "exportedAt": "2026-11-03T11:12:45.348Z",
+  "judge": "mock",
+  "tasks": {
+    "3": {
+      "submission": "Work for: Write the install steps\nClause 1: This covers \"npm install\" and \"node --version\".\nClause 2: This covers \"troubleshooting\".",
+      "verdict": {
+        "taskId": "3",
+        "status": "settled",
+        "outcome": "approved",
+        "confidence": 90,
+        "clauses": [
+          {
+            "index": 0,
+            "passed": true,
+            "reason": "The submission contains \"npm install\" and \"node --version\"."
+          },
+          {
+            "index": 1,
+            "passed": true,
+            "reason": "The submission contains \"troubleshooting\"."
+          }
+        ],
+        "summary": "Every one of the 2 clauses is satisfied. (Offline mock judge.)",
+        "model": "mock",
+        "at": "2026-11-03T11:11:49.976Z",
+        "reasoningJson": "{\"version\":1,\"contract\":\"rubric-escrow-1d2c.testnet\",\"taskId\":\"3\",\"clausesHash\":\"ca18c6eccd6126f145544d3dab6f8f67edfe6886d5b5d0bf8e871c986534bc64\",\"submissionHash\":\"aea841836a8b08abed7ecd53778759c4d4347c70a31e9f5be1f60ea5a716a784\",\"model\":\"mock\",\"outcome\":\"approved\",\"confidence\":90,\"clauses\":[{\"index\":0,\"passed\":true,\"reason\":\"The submission contains \\\"npm install\\\" and \\\"node --version\\\".\"},{\"index\":1,\"passed\":true,\"reason\":\"The submission contains \\\"troubleshooting\\\".\"}],\"summary\":\"Every one of the 2 clauses is satisfied. (Offline mock judge.)\",\"decidedAt\":\"2026-11-03T11:11:49.976Z\"}",
+        "reasoningHash": "cabf85f05caa4771fba7601a81e31009e883f463319da8d4b173c7b527092526",
+        "txHash": "3hzptfcefnDzoaUzwY5xr7814DSn3oSBWKGQ5ZwEVTUf"
+      },
+      "txs": {
+        "seal": "55XBtqWnWYoNmugwE6tkU19LvmXM5Pyh5QxuinYVqHZg",
+        "submit": "5ArMLqq2ZB1taVRQRFQXnyTgZ3DfMDp9sMKsv3tN2jZc",
+        "settle": "3hzptfcefnDzoaUzwY5xr7814DSn3oSBWKGQ5ZwEVTUf"
+      }
+    },
+    "4": {
+      "submission": "Work for: Summarise the changelog\nClause 1: This covers \"breaking changes\".\nClause 2: I did not get to this one.",
+      "verdict": {
+        "taskId": "4",
+        "status": "settled",
+        "outcome": "rejected",
+        "confidence": 90,
+        "clauses": [
+          {
+            "index": 0,
+            "passed": true,
+            "reason": "The submission contains \"breaking changes\"."
+          },
+          {
+            "index": 1,
+            "passed": false,
+            "reason": "The submission does not contain \"new features\"."
+          }
+        ],
+        "summary": "1 of 2 clauses failed; see the rulings. (Offline mock judge.)",
+        "model": "mock",
+        "at": "2026-11-03T11:12:00.899Z",
+        "reasoningJson": "{\"version\":1,\"contract\":\"rubric-escrow-1d2c.testnet\",\"taskId\":\"4\",\"clausesHash\":\"7b7d43aec33291888ad16eff24b55f373cc2f4c45428c46f6a3939c05975c26a\",\"submissionHash\":\"f337ac4a7d803987270afce4491043d92c67b9f6b8aff4e2fd47523742990d88\",\"model\":\"mock\",\"outcome\":\"rejected\",\"confidence\":90,\"clauses\":[{\"index\":0,\"passed\":true,\"reason\":\"The submission contains \\\"breaking changes\\\".\"},{\"index\":1,\"passed\":false,\"reason\":\"The submission does not contain \\\"new features\\\".\"}],\"summary\":\"1 of 2 clauses failed; see the rulings. (Offline mock judge.)\",\"decidedAt\":\"2026-11-03T11:12:00.899Z\"}",
+        "reasoningHash": "a68b4d3aed38fea80aff5eabe6156c3ff1b7a35f461466cf64b0eaf18c6f0485",
+        "txHash": "H3bmWFkdndLPs1niEpe3PbS5eJjERtzWGNGUE9GBuGTj"
+      },
+      "txs": {
+        "seal": "BmP2P15YC5DCHmJ7arZTYigJCgj86B3Zcygg91BbpcpT",
+        "submit": "5QNn1wS7ZhSCeLJZXEDZ7hpcooWnHugyk8YH1EcQjDVx",
+        "settle": "H3bmWFkdndLPs1niEpe3PbS5eJjERtzWGNGUE9GBuGTj"
+      }
+    },
+    "5": {
+      "submission": null,
+      "verdict": null,
+      "txs": {
+        "seal": "9RFN8CB4e1M6oTmWSjM2mnxpT2ZF9tyb2sCx9muQ8itx"
+      }
+    }
+  }
+}

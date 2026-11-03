@@ -1,0 +1,16 @@
+{
+  "name": "@rubric-near/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A static dashboard that reads the escrow contract from the chain and re-checks every claim in the reader's browser.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node serve.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@rubric-near/shared": "*"
+  }
+}

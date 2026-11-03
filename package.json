@@ -11,7 +11,8 @@
     "shared",
     "judge",
     "agents",
-    "demo"
+    "demo",
+    "web"
   ],
   "scripts": {
     "test": "npm run test --workspaces --if-present",
