@@ -20,6 +20,7 @@
     "sandbox:install": "npm --prefix sandbox install",
     "demo:sandbox": "npm --prefix sandbox run demo",
     "test:sandbox": "npm --prefix sandbox test",
+    "deploy:testnet": "npm run deploy:testnet -w demo",
     "demo:testnet": "npm run demo:testnet -w demo",
     "judge": "npm run judge -w judge --",
     "dashboard": "npm start -w web"

@@ -2,7 +2,7 @@
   "name": "@rubric-near/demo",
   "version": "0.1.0",
   "private": true,
-  "description": "Runs the whole loop: a poster agent buys work, a worker agent does it, the judge rules, the contract pays.",
+  "description": "Runs the whole loop: a poster agent buys work, a worker agent does it, the judge rules, the contract pays. Also deploys the contract to testnet.",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -11,9 +11,14 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "demo:testnet": "tsx --env-file-if-exists=../.env src/testnet.ts"
+    "demo:testnet": "tsx --env-file-if-exists=../.env src/testnet.ts",
+    "deploy:testnet": "tsx --env-file-if-exists=../.env src/deploy.ts"
   },
   "dependencies": {
+    "@near-js/accounts": "^2.5.1",
+    "@near-js/crypto": "^2.5.1",
+    "@near-js/providers": "^2.5.1",
+    "@near-js/signers": "^2.5.1",
     "@rubric-near/agents": "*",
     "@rubric-near/judge": "*",
     "@rubric-near/shared": "*"

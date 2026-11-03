@@ -195,8 +195,16 @@ These are throwaway testnet accounts. The deployed code is exactly the committed
 [`contract/res/rubric_near.wasm`](contract/res/README.md): its README shows how to check that the
 hash on-chain equals the hash of the file.
 
-To run the same demo against testnet with accounts of your own, see `npm run demo:testnet` and
-[`.env.example`](.env.example).
+To put the contract on testnet with accounts of your own, create a new testnet account for it (plus an
+owner and a judge account), fill in [`.env.example`](.env.example), and run:
+
+```bash
+npm run deploy:testnet   # uploads the committed wasm, then reads the code hash back and fails unless it matches
+npm run demo:testnet     # runs the four jobs against it
+```
+
+`deploy:testnet` deliberately builds nothing: it deploys the exact bytes of `contract/res/rubric_near.wasm`
+and refuses an account that already has a contract.
 
 ---
 
