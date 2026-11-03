@@ -25,6 +25,7 @@ import {
   type PosterChain,
   type Receipt,
   type WorkerChain,
+  type WorkResult,
 } from "@rubric-near/agents";
 import {
   MemoryStore,
@@ -34,6 +35,7 @@ import {
   reasoningMatches,
   type JudgeModel,
 } from "@rubric-near/judge";
+import { buildSnapshot, type Snapshot } from "./snapshot.js";
 
 export interface Party {
   account: string;
@@ -66,6 +68,8 @@ export interface ScenarioResult {
   table: string;
   checks: Check[];
   ok: boolean;
+  /** The judge's reasoning, the submitted work and the transaction hashes, for the dashboard to check against the chain. */
+  snapshot: Snapshot;
 }
 
 const NEEDS = {
@@ -164,6 +168,7 @@ export async function runScenario(input: ScenarioInput): Promise<ScenarioResult>
     const budget = new Budget(input.budget ?? 3n * NEAR);
     const receipts = new ReceiptBook();
     const poster = new PosterAgent({ chain: posterChain, budget, receipts, sellers: [honest] });
+    const works: WorkResult[] = [];
     log(`poster ${input.poster.account} has a budget of ${formatNear(budget.cap)} NEAR`);
 
     const settle = async (r: Receipt): Promise<Receipt> => {
@@ -176,6 +181,7 @@ export async function runScenario(input: ScenarioInput): Promise<ScenarioResult>
     const r1 = await poster.buy(NEEDS.install());
     log(`   sealed as task ${r1.taskId} for ${formatNear(r1.price)} NEAR (${r1.note})`);
     const w1 = await honest.step();
+    if (w1) works.push(w1);
     log(`   worker: ${w1?.note}`);
     await settle(r1);
 
@@ -189,6 +195,7 @@ export async function runScenario(input: ScenarioInput): Promise<ScenarioResult>
     const r3 = await poster.buy(NEEDS.changelog());
     log(`   sealed as task ${r3.taskId} for ${formatNear(r3.price)} NEAR`);
     const w3 = await careless.step();
+    if (w3) works.push(w3);
     log(`   worker (careless): ${w3?.note}`);
     await settle(r3);
 
@@ -231,7 +238,15 @@ export async function runScenario(input: ScenarioInput): Promise<ScenarioResult>
     check("the poster agent stayed inside its budget", budget.remaining >= 0n && budget.remaining === budget.cap - price1, `${formatNear(budget.remaining)} of ${formatNear(budget.cap)} NEAR left`);
 
     const all = [r1, r2, r3, ...(r4 ? [r4] : [])];
-    return { receipts: all, table: receipts.table(), checks, ok: checks.every((c) => c.ok) };
+    const snapshot = buildSnapshot({
+      contractId: input.contractId,
+      exportedAt: new Date().toISOString(),
+      judge: model.name,
+      receipts: all,
+      works,
+      verdicts: await store.list(),
+    });
+    return { receipts: all, table: receipts.table(), checks, ok: checks.every((c) => c.ok), snapshot };
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()));
   }

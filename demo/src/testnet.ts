@@ -6,8 +6,13 @@
  * Each account's key is read from <NAME>_PRIVATE_KEY, or from the NEAR CLI's credentials file
  * (~/.near-credentials/testnet/<account>.json, or NEAR_CREDENTIALS_DIR). Set JUDGE_MODE=near-ai and
  * NEAR_AI_API_KEY to use a real model; the default is the offline mock.
+ *
+ * Set EXPORT_SNAPSHOT=<path> to also write the judge's reasoning, the submitted work and the
+ * transaction hashes to a JSON file for the dashboard (web/public/data/verdicts.json).
  */
 
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
 import { loadSecretKey } from "@rubric-near/shared";
 import { NearAiModel } from "@rubric-near/judge";
 import { runScenario, type Party } from "./scenario.js";
@@ -44,6 +49,17 @@ async function main() {
   console.log("\nCHECKS (against the chain, not against what the agents said)");
   for (const c of result.checks) console.log(`  ${c.ok ? "PASS" : "FAIL"}  ${c.name}\n        ${c.detail}`);
   console.log(`\n${result.ok ? "ALL CHECKS PASSED" : "SOME CHECKS FAILED"}`);
+
+  // The dashboard checks this file against the chain, so it is only worth writing from a run whose
+  // own checks passed; a failed run would hand it a record of something that did not work.
+  const exportPath = process.env.EXPORT_SNAPSHOT?.trim();
+  if (exportPath && result.ok) {
+    await mkdir(dirname(exportPath), { recursive: true });
+    await writeFile(exportPath, `${JSON.stringify(result.snapshot, null, 2)}\n`, "utf8");
+    console.log(`snapshot written to ${exportPath}`);
+  } else if (exportPath) {
+    console.log("snapshot NOT written: the run did not pass its checks");
+  }
   process.exit(result.ok ? 0 : 1);
 }
 

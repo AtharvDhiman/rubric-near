@@ -36,6 +36,10 @@ export interface WorkResult {
   taskId: string;
   submitted: boolean;
   submissionHash: string | null;
+  /** The deliverable exactly as produced; its SHA-256 is `submissionHash`. */
+  content: string;
+  /** The transaction that committed the hash on-chain, or null if the contract refused it. */
+  submitTx: string | null;
   /** The judge's JSON reply, or why there was none. */
   judge: unknown;
   note: string;
@@ -93,10 +97,11 @@ export class WorkerAgent implements Seller {
   async work(task: Task): Promise<WorkResult> {
     const content = await this.deps.doer.produce({ title: task.title, clauses: task.clauses });
     const submissionHash = hashSubmission(content);
+    let submitTx: string;
     try {
-      await this.deps.chain.submit(task.id, submissionHash);
+      ({ txHash: submitTx } = await this.deps.chain.submit(task.id, submissionHash));
     } catch (error) {
-      return { taskId: task.id, submitted: false, submissionHash, judge: null, note: `the contract refused the submission: ${(error as Error).message}` };
+      return { taskId: task.id, submitted: false, submissionHash, content, submitTx: null, judge: null, note: `the contract refused the submission: ${(error as Error).message}` };
     }
 
     let judge: unknown;
@@ -109,9 +114,9 @@ export class WorkerAgent implements Seller {
       judge = await res.json();
     } catch {
       // The work is committed on-chain either way. The judge can be given the text again.
-      return { taskId: task.id, submitted: true, submissionHash, judge: null, note: "submitted on-chain, but the judge could not be reached" };
+      return { taskId: task.id, submitted: true, submissionHash, content, submitTx, judge: null, note: "submitted on-chain, but the judge could not be reached" };
     }
-    return { taskId: task.id, submitted: true, submissionHash, judge, note: "submitted and handed to the judge" };
+    return { taskId: task.id, submitted: true, submissionHash, content, submitTx, judge, note: "submitted and handed to the judge" };
   }
 
   /** Find a job and do it. Returns null if there is nothing worth taking. */

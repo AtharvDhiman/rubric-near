@@ -125,6 +125,17 @@ describe("doing the work", () => {
     expect(result.judge).toEqual({ status: "settled" });
   });
 
+  it("returns the text it submitted and the transaction that committed its hash", async () => {
+    const { worker } = setup([task()]);
+    const ok = await worker.work(task());
+    expect(ok.content).toBe("the deliverable text");
+    expect(hashSubmission(ok.content)).toBe(ok.submissionHash);
+    expect(ok.submitTx).toBe("TX");
+
+    const refused = await setup([task()], { submitFails: new Error("closed") }).worker.work(task());
+    expect(refused).toMatchObject({ submitted: false, content: "the deliverable text", submitTx: null });
+  });
+
   it("the hash on-chain and the text the judge gets are of the same string", async () => {
     const { worker, submits, posts } = setup([task()]);
     await worker.work(task());
