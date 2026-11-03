@@ -22,7 +22,7 @@ You need Node.js 22 or newer and git. Step 3 needs Linux, macOS or WSL (the loca
 not built for native Windows); everything else runs anywhere.
 
 ```bash
-git clone REPO_URL rubric-near
+git clone https://github.com/AtharvDhiman/rubric-near.git
 cd rubric-near
 
 npm install            # 1. dependencies for the TypeScript packages
