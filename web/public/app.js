@@ -2,7 +2,7 @@
 // it read (see lib.js). Text from the chain or from the published snapshot only ever goes into the
 // page as a text node, so nothing a task's author wrote can become markup.
 
-import { accountUrl, describeOutcome, formatNear, loadChain, nsToDate, short, tally, txUrl, verifyTask } from "./lib.js";
+import { accountUrl, describeOutcome, formatNear, judgeModels, loadChain, nsToDate, short, tally, txUrl, verifyTask } from "./lib.js";
 
 const app = /** @type {HTMLElement} */ (document.getElementById("app"));
 
@@ -132,7 +132,9 @@ function renderDocket(/** @type {Model} */ m) {
   const { config, chain, snapshot } = m;
   const everything = chain.tasks.flatMap((/** @type {any} */ t) => m.checks.get(t.id) ?? []);
   const total = tally(everything);
-  const judgeName = snapshot ? (snapshot.judge === "mock" ? "mock (offline)" : String(snapshot.judge)) : "not published";
+  const models = judgeModels(snapshot);
+  const judgeName = models.length > 0 ? models.map((name) => (name === "mock" ? "mock (offline)" : name)).join(", ") : "not published";
+  const usesMock = models.includes("mock");
 
   const rows = chain.tasks.map((/** @type {any} */ task) => {
     const verdict = task.verdict;
@@ -160,13 +162,20 @@ function renderDocket(/** @type {Model} */ m) {
       ),
       h("p", { class: "soft" }, "Below is the live docket. Your browser re-derives each claim from the chain instead of taking this page's word for it.")
     ),
-    snapshot?.judge === "mock" &&
-      h(
-        "p",
-        { class: "notice notice-hold" },
-        h("strong", null, "The judge in this demo is the offline mock. "),
-        "It follows deterministic keyword rules and is not a language model. The contract, the hashes and the payouts are real testnet state; the README shows how to run the same flow with a model on NEAR AI Cloud."
-      ),
+    usesMock &&
+      (models.length === 1
+        ? h(
+            "p",
+            { class: "notice notice-hold" },
+            h("strong", null, "The judge in this demo is the offline mock. "),
+            "It follows deterministic keyword rules and is not a language model. The contract, the hashes and the payouts are real testnet state; the README shows how to run the same flow with a model on NEAR AI Cloud."
+          )
+        : h(
+            "p",
+            { class: "notice notice-hold" },
+            h("strong", null, "Some of these verdicts come from the offline mock judge. "),
+            "Each task names the judge that ruled on it. The mock follows deterministic keyword rules and is not a language model; the others were ruled by a model."
+          )),
     m.snapshotNote && h("p", { class: "notice notice-hold" }, m.snapshotNote),
     h(
       "dl",

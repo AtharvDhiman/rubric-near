@@ -28,6 +28,22 @@ export interface Snapshot {
   tasks: Record<string, SnapshotTask>;
 }
 
+/**
+ * Combine an earlier snapshot with a new run's, so a second run against the same contract (say, with
+ * a real model after one with the mock) adds to what the dashboard can verify instead of erasing it.
+ * A snapshot for another contract, or one that is not a snapshot at all, is replaced.
+ */
+export function mergeSnapshots(existing: unknown, fresh: Snapshot): Snapshot {
+  const old = existing as Partial<Snapshot> | null | undefined;
+  if (!old || old.version !== 1 || old.contract !== fresh.contract || typeof old.tasks !== "object" || old.tasks === null) return fresh;
+  return {
+    ...fresh,
+    // Each verdict names its own model; this is only the file's summary.
+    judge: old.judge === fresh.judge ? fresh.judge : "mixed",
+    tasks: { ...old.tasks, ...fresh.tasks },
+  };
+}
+
 export function buildSnapshot(input: {
   contractId: string;
   exportedAt: string;

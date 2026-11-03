@@ -104,6 +104,19 @@ export async function loadChain(rpcUrl, contractId, fetchImpl = globalThis.fetch
   return { config, accounting, tasks };
 }
 
+/**
+ * The models named by the verdicts in a snapshot, sorted and without duplicates. They are read from
+ * each verdict because the file's own "judge" field is only a summary, and runs with different judges
+ * can share one file.
+ * @param {any} snapshot
+ * @returns {string[]}
+ */
+export function judgeModels(snapshot) {
+  const tasks = snapshot && typeof snapshot.tasks === "object" && snapshot.tasks ? Object.values(snapshot.tasks) : [];
+  const names = tasks.map((/** @type {any} */ t) => t?.verdict?.model).filter((/** @type {unknown} */ m) => typeof m === "string" && m.length > 0);
+  return [...new Set(names)].sort();
+}
+
 // ----------------------------------------------------------------------------------- explorer links
 
 const TX_HASH = /^[1-9A-HJ-NP-Za-km-z]{43,44}$/;

@@ -7,6 +7,7 @@ import {
   describeOutcome,
   formatNear,
   hashRubric,
+  judgeModels,
   loadChain,
   nsToDate,
   sha256Hex,
@@ -71,6 +72,25 @@ describe("amounts", () => {
   it("shortens long text and leaves short text alone", () => {
     expect(short("a".repeat(64))).toBe(`${"a".repeat(12)}…`);
     expect(short("abc")).toBe("abc");
+  });
+});
+
+describe("judgeModels", () => {
+  const task = (model?: unknown) => ({ submission: null, verdict: model === undefined ? null : { model }, txs: {} });
+
+  it("lists each model once, from the verdicts themselves, sorted", () => {
+    const snapshot = { judge: "mock", tasks: { 0: task("mock"), 1: task("anthropic/claude-sonnet-5-5"), 2: task("mock") } };
+    expect(judgeModels(snapshot)).toEqual(["anthropic/claude-sonnet-5-5", "mock"]);
+  });
+
+  it("ignores the file's own summary field, which can be stale", () => {
+    expect(judgeModels({ judge: "mock", tasks: { 0: task("some/model") } })).toEqual(["some/model"]);
+  });
+
+  it("is empty when there is nothing to read, and does not trust odd values", () => {
+    for (const s of [null, undefined, {}, { tasks: null }, { tasks: "x" }, { tasks: { 0: task() } }, { tasks: { 0: task(5), 1: task(""), 2: task(null) } }]) {
+      expect(judgeModels(s)).toEqual([]);
+    }
   });
 });
 
